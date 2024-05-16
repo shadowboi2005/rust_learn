@@ -24,14 +24,22 @@ fn main() {
     //challenge 3
     let encstr = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736".to_string();
     for i in 0..16{
-        let i = String::from(format!("{i:b}"));
-        println!("{i}");
+        let mut i = String::from(format!("{i:b}"));
+        loop{
+            if i.len() >= 4{
+                break;
+            }else{
+                i.insert_str(0, "0");
+            }
+        }
+        //println!("{i}");
         let i = to_hex(i.as_str()).to_string();
         
         let key:Vec<char> = i.chars().collect();
-        println!("{:?}",key);
+        //println!("{:?}",key);
         let key = key[0];
         let decstr = singlexor(encstr.clone(), key);
+        let decstr = hextob64(decstr);
         println!("{key}: {decstr}")
     }
 }
@@ -152,10 +160,9 @@ fn xor(s1:String,s2:String)->String{
 fn singlexor(s:String , c:char) -> String{
     let mut sgen: String = String::new();
     for _i in 0..=s.len(){
-        println!("{c}");
         sgen.push(c);
     }
-    println!("{sgen}");
+    //println!("{sgen}");
     let ret = fixedxor(s,sgen);
     ret
 }
